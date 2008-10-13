@@ -2,7 +2,7 @@ class Modulo
 
   include Comparable
 
-  [:+, :-, :*].each do |meth|
+  [:+, :-, :*, :**].each do |meth|
     define_method(meth) { |other_n| Modulo.new(@n.send(meth, other_n.to_i), @m) }
   end
 
@@ -21,7 +21,7 @@ class Modulo
   private
 
   def coerce(numeric)
-    [@n, numeric]
+    [numeric, @n]
   end
 
 end
