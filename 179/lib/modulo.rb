@@ -7,8 +7,7 @@ class Modulo
   end
 
   def initialize(n = 0, m = 26)
-    @m = m
-    @n = n % m
+    @n, @m = n % m, m
   end
 
   def <=>(other_n)
