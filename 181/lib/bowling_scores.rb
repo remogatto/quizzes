@@ -8,7 +8,7 @@ class ScoreTable
     compile_frames
   end
 
-  def show_table
+  def print
     printf("%s\n\n", "#{@player}'s final score: #{@final_score}")
     printf("%5s %10s %10s %10s\n", 'Frame', 'Roll', 'Roll', 'Score')
     @frames.each { |frame| printf("%3s %10s %10s %10s\n", *frame) }
@@ -40,7 +40,7 @@ class ScoreTable
         else
           @final_score += pin + @pins[index.succ]
           frame_at(index) << index.succ << pin(pin) << pin(@pins[index.succ]) << @final_score
-          @pins.shift        
+          @pins.shift
         end        
       else
         frame_at(index) << '*' << pin(pin) << pin(@pins[index.succ]) << ''
@@ -52,4 +52,4 @@ class ScoreTable
 
 end
 
-ScoreTable.new(ARGV[0], ARGV[1..-1].map { |arg| arg.to_i }).show_table if $0 == __FILE__
+ScoreTable.new(ARGV[0], ARGV[1..-1].map { |arg| arg.to_i }).print if $0 == __FILE__

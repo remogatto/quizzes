@@ -98,10 +98,10 @@ describe ScoreTable do
 
   it 'should display a score table' do
     capture_stdout do 
-      ScoreTable.new('John', @john_pins).show_table
+      ScoreTable.new('John', @john_pins).print
     end.should == JOHN_SCORE_TABLE
     capture_stdout do 
-      ScoreTable.new('Mary', @mary_pins).show_table
+      ScoreTable.new('Mary', @mary_pins).print
     end.should == MARY_SCORE_TABLE    
   end
 
