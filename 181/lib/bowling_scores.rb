@@ -29,23 +29,19 @@ class ScoreTable
   def compile_frames
 
     @pins.each_with_index do |pin, index|
-      if index < 10
-        if pin == 10
-          @final_score += pin + @pins[index.succ] + @pins[index.succ.succ]
-          frame_at(index) << index.succ << 'X' << '' << @final_score
-        elsif (pin + @pins[index.succ]) == 10
-          @final_score += pin + @pins[index.succ] + @pins[index.succ.succ]
-          frame_at(index) << index.succ << pin(pin) << '/' << @final_score
-          @pins.shift
-        else
-          @final_score += pin + @pins[index.succ]
-          frame_at(index) << index.succ << pin(pin) << pin(@pins[index.succ]) << @final_score
-          @pins.shift
-        end        
-      else
+      if index >= 10
         frame_at(index) << '*' << pin(pin) << pin(@pins[index.succ]) << ''
-        @pins.shift
+      elsif pin == 10
+        @final_score += pin + @pins[index.succ] + @pins[index.succ.succ]
+        frame_at(index) << index.succ << 'X' << '' << @final_score
+      elsif (pin + @pins[index.succ]) == 10
+        @final_score += pin + @pins[index.succ] + @pins[index.succ.succ]
+        frame_at(index) << index.succ << pin(pin) << '/' << @final_score
+      else
+        @final_score += pin + @pins[index.succ]
+        frame_at(index) << index.succ << pin(pin) << pin(@pins[index.succ]) << @final_score
       end
+      @pins.shift unless pin == 10
     end
 
   end
