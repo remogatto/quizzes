@@ -30,7 +30,7 @@ Frame       Roll       Roll      Score
 EOS
 
 MARY_SCORE_TABLE = <<EOS
-Mary\'s final score: 82
+Mary\'s final score: 92
 
 Frame       Roll       Roll      Score
   1          9          -          9
@@ -42,14 +42,15 @@ Frame       Roll       Roll      Score
   7          2          5         57
   8          8          -         65
   9          7          1         73
- 10          8          1         82
+ 10          X                    92
+  *          8          1           
 EOS
 
 describe ScoreTable do
 
   before do
     @john_pins = [6, 2, 7, 1, 10, 9, 0, 8, 2, 10, 10, 3, 5, 7, 2, 5, 5, 8]
-    @mary_pins = [9, 0, 3, 5, 6, 1, 3, 6, 8, 1, 5, 3, 2, 5, 8, 0, 7, 1, 8, 1]
+    @mary_pins = [9, 0, 3, 5, 6, 1, 3, 6, 8, 1, 5, 3, 2, 5, 8, 0, 7, 1, 10, 8, 1]
     @perfect_game = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
   end
 
@@ -65,7 +66,7 @@ describe ScoreTable do
                                                           [8, 3, 5, 113], 
                                                           [9, 7, 2, 122], 
                                                           [10, 5, '/', 140], 
-                                                          ['*', 8]
+                                                          ['*', 8, '', '']
                                                          ]
     ScoreTable.new('Mary', @mary_pins).frames.should == [
                                                          [1, 9, '-', 9], 
@@ -77,13 +78,14 @@ describe ScoreTable do
                                                          [7, 2, 5, 57], 
                                                          [8, 8, '-', 65], 
                                                          [9, 7, 1, 73], 
-                                                         [10, 8, 1, 82]
+                                                         [10, 'X', '', 92],
+                                                         ['*', 8, 1, '']
                                                         ]
   end
 
   it 'should calculate the final score' do
     ScoreTable.new('John', @john_pins).final_score.should == 140
-    ScoreTable.new('Mary', @mary_pins).final_score.should == 82
+    ScoreTable.new('Mary', @mary_pins).final_score.should == 92
   end
 
   it 'should score 0 if no pins were held' do
