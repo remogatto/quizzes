@@ -1,85 +1,106 @@
 require 'lib/gol.rb'
 
 describe Grid do
-  before :all do
-    @seed = [
-             [1, 0, 0, 0, 0, 0, 0, 0, 0],
-             [1, 0, 0, 1, 1, 1, 0, 0, 0],
-             [0, 1, 0, 0, 0, 1, 0, 1, 0],
-             [1, 1, 1, 0, 1, 0, 0, 1, 0],
-             [0, 0, 0, 1, 0, 0, 0, 0, 0],
-             [0, 0, 0, 1, 0, 1, 0, 1, 0],
-             [1, 1, 0, 1, 0, 1, 0, 1, 0],
-             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 1, 0, 1, 0, 1, 0]
-            ]
-    @grid = Grid.new(@seed)
-  end
-  it 'should set its width and height' do
-    @grid.h.should == 9
-    @grid.w.should == 9
-  end
-  it 'should initialize the cells from the given seed' do
-    x = 0
-    y = 0
-    size = @grid.h
-    @grid.cells.each do |cell|
-      cell.status.should == @seed[y][x]
-      x < size - 1 ? x +=1 : (x = 0; y += 1)
-    end
+  before do
+    @a = [
+          [0, 0, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 0, 1, 0],
+          [0, 0, 0, 0]
+         ]
+    @grid = Grid.new(@a)
   end
   it 'should return the cell at the given coordinates' do
-    @grid[0, 1].status.should == 1
+    @grid[0, 1].should == 0
+    @grid[1, 1].should == 1
   end
   it 'should clip the coordinates out of the grid' do
-    @grid[9, 6].status.should == 1
-    @grid[9, 18].status.should == 1
-    @grid[3, -1].status.should == 1
+    @grid[-1, 0].should == 0
+    @grid[-3, 1].should == 1
+    @grid[2, 8].should == 1
   end
-  it 'should evolve to the next generation' do
-    seed = [
-            [0, 0, 1],
-            [1, 0, 0],
-            [0, 1, 0]
-           ]
-    Grid.new(seed).tick.cells[0].status.should == 1 
-    Grid.new(seed).tick.cells[1].status.should == 1 
-    Grid.new(seed).tick.cells[2].status.should == 1
-    Grid.new(seed).tick.cells[3].status.should == 1 
-    Grid.new(seed).tick.cells[4].status.should == 1 
-    Grid.new(seed).tick.cells[5].status.should == 1 
-    Grid.new(seed).tick.cells[6].status.should == 1 
-    Grid.new(seed).tick.cells[7].status.should == 1 
-    Grid.new(seed).tick.cells[8].status.should == 1
-    Grid.new(@seed).tick.cells[0].status.should == 0 
-    Grid.new(@seed).tick.cells[14].status.should == 1
+  it 'should correctly evolve to the next generation' do
+    a_0 = [
+           [0, 0, 0, 0],
+           [0, 1, 0, 0],
+           [0, 1, 0, 0],
+           [0, 0, 1, 0],
+           [0, 0, 0, 0]
+          ]
+    a_1 = [
+           [0, 0, 0, 0],
+           [0, 0, 0, 0],
+           [0, 1, 1, 0],
+           [0, 0, 0, 0],
+           [0, 0, 0, 0]
+          ]
+    a_2 = [
+           [0, 0, 0, 0],
+           [0, 0, 0, 0],
+           [0, 0, 0, 0],
+           [0, 0, 0, 0],
+           [0, 0, 0, 0]
+          ]
+    b_0 = [
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0],
+           [0, 1, 1, 1, 1, 0],
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0]
+          ] 
+    b_1 = [
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 0, 0, 0, 0]
+          ]
+    b_2 = [
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 1, 0, 0, 1, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 0, 0, 0, 0]
+          ]
+    c_0 = [
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 1, 0, 0, 0],
+           [0, 0, 1, 1, 1, 0],
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0]
+          ]    
+    c_1 = [
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 1, 0, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 0, 1, 0, 0],
+           [0, 0, 0, 0, 0, 0]
+          ]    
+    c_2 = [
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 0, 0, 0, 0]
+          ]    
+    c_3 = [
+           [0, 0, 0, 0, 0, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 1, 0, 0, 1, 0],
+           [0, 0, 1, 1, 0, 0],
+           [0, 0, 0, 0, 0, 0]
+          ]    
+    Grid.new(a_0).tick.cells.should == a_1
+    Grid.new(a_0).tick.tick.cells.should == a_2
+    Grid.new(b_0).tick.cells.should == b_1
+    Grid.new(b_0).tick.tick.cells.should == b_2
+    Grid.new(c_0).tick.cells.should == c_1
+    Grid.new(c_0).tick.tick.cells.should == c_2
+    Grid.new(c_0).tick.tick.tick.cells.should == c_3
   end
   it 'should return a string' do
-    Grid.new(@seed).tick.to_s.should == "   x xx x\nxx  xxx x\n     x   \nxxxxx x x\n x x  x x\n   x    x\n  x     x\n  x     x\n         \n"
-  end
-  it 'should generate a random squared seed grid' do
-    Grid.generate(10).size.should == 10
+    Grid.new(@a).tick.to_s.should == "    \n    \n xx \n    \n    \n"
   end
 end
 
-describe Grid::Cell do
-  before :all do
-    @seed = [
-             [1, 0, 0, 0, 0, 0, 0, 0, 0],
-             [1, 0, 0, 1, 1, 1, 0, 0, 0],
-             [0, 1, 0, 0, 0, 1, 0, 1, 0],
-             [1, 1, 1, 0, 1, 0, 0, 1, 0],
-             [0, 0, 0, 1, 0, 0, 0, 0, 0],
-             [0, 0, 0, 1, 0, 1, 0, 1, 0],
-             [1, 1, 0, 1, 0, 1, 0, 1, 0],
-             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 1, 0, 1, 0, 1, 0]
-            ]
-    @grid = Grid.new(@seed)
-  end
-  it 'should find how much neighbours are alive' do
-    @grid[3, 1].alives.should == 1
-    @grid[1, 3].alives.should == 3
-    @grid[8, 0].alives.should == 3
-  end
-end

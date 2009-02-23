@@ -1,91 +1,68 @@
 class Grid
   class Cell
-    attr_reader :x, :y
-    attr_reader :status
-    def initialize(grid, x, y, status = 1)
-      @x, @y, @status = x, y, status
+    def initialize(grid, x, y, status)
       @grid = grid
+      @x, @y = x, y
+      @status = status
     end
-    def born
-      Cell.new(@grid, @x, @y, 1)
-    end
-    def die
-      Cell.new(@grid, @x, @y, 0)
+    def alive?(status)
+      @status == 1
     end
     def alives
-      return [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]].inject(0) do |sum, cell|
-        sum += @grid[@x + cell[0], @y + cell[1]].status
+      [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]].inject(0) do |sum, cell|
+        sum += @grid[@x + cell[0], @y + cell[1]]
       end
     end
-    def to_s
-      @status == 1 ? "x" : " "
+    def born
+      @grid.nextgen[@x][@y] = 1
+    end
+    def die
+      @grid.nextgen[@x][@y] = 0
+    end
+    def unchanged
+      @grid.nextgen[@x][@y] = status
     end
   end
-  attr_reader :w, :h, :size
-  attr_reader :cells, :next
-  def self.generate(size)
-    self.new(Array.new(size).collect { Array.new(size).collect { rand(2) } })
+  attr_reader :cells, :nextgen
+  def self.generate(width, height)
+    self.new(Array.new(height).collect { Array.new(width).collect { rand(2) } })
   end
   def initialize(seed)
-    @seed = seed
-    @w = @h = @size = seed.size
-    set_cells
+    @cells, @nextgen = seed, seed.dup
+    @w, @h = seed.first.size, seed.size
   end
   def [](x, y)
-    @cells[clip(y) * @w + clip(x)]
+    @cells[y % @h][x % @w]
   end
   def tick
-    nextgen = @cells.inject([]) do |generation, cell|
-      if cell.status == 1
-        if cell.alives < 2 or cell.alives > 3
-          generation << cell.die
-        elsif cell.alives == 2 or cell.alives == 3
-          generation << cell.dup
-        end
-      else
-        if cell.alives == 3
-          generation << cell.born
+    @nextgen = []
+    @cells.each_with_index do |c, y|
+      @nextgen[y] = [] 
+      c.each_with_index do |status, x|
+        cell = Cell.new(self, x, y, status)
+        if cell.alive?(status)
+          (cell.alives < 2 || cell.alives > 3) ? @nextgen[y] << 0 : @nextgen[y] << status
         else
-          generation << cell.dup
-        end
+          cell.alives == 3 ? @nextgen[y] << 1 : @nextgen[y] << status
+        end        
       end
     end
-    @cells = nextgen.dup
+    @cells = @nextgen
     self
   end
   def to_s
     result = ""
-    (0..@size - 1).each do |row| 
-      (0..@size - 1).each do |col|
-        result << @cells[row * @size + col].to_s
-      end
-      result << "\n"
+    @cells.each_with_index do |c, y|
+      result << c.collect { |status| status == 1 ? "x" : " " }.join << "\n"
     end
     result
-  end
-  private
-  def clip(coord)
-    coord % @size
-  end
-  def set_cells
-    y = 0
-    @cells = @seed.inject([]) do |cells, cell_row|
-      x = 0
-      cell_row.each do |status|
-        cells << Cell.new(self, x, y, status)
-        x += 1
-      end
-      y += 1
-      cells
-    end
   end
 end 
 
 if $0 == __FILE__
-  grid = Grid.generate(80)  
+  grid = Grid.generate(80, 20)  
   while 0 != 1 
     print grid.tick.to_s
-    puts "-"*30
-    sleep 1
+    puts "-"*80
   end
 end
