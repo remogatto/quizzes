@@ -1,0 +1,6 @@
+--- !ditz.rubyforge.org,2008-03-06/config 
+name: Andrea Fazzi
+email: andrea.fazzi@alcacoop.it
+issue_dir: .ditz
+use_editor_if_possible: false
+paginate: auto

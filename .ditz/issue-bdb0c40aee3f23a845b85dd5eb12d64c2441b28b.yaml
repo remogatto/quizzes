@@ -1,0 +1,28 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: "Quiz #193"
+desc: Game of Life
+type: :task
+component: Ruby Quiz
+release: 
+reporter: Andrea Fazzi <andrea.fazzi@alcacoop.it>
+status: :paused
+disposition: 
+creation_time: 2009-02-21 08:40:33.526798 Z
+references: []
+
+id: bdb0c40aee3f23a845b85dd5eb12d64c2441b28b
+log_events: 
+- - 2009-02-21 08:40:33.527459 Z
+  - Andrea Fazzi <andrea.fazzi@alcacoop.it>
+  - created
+  - ""
+- - 2009-02-21 08:40:55.974718 Z
+  - Andrea Fazzi <andrea.fazzi@alcacoop.it>
+  - changed status from unstarted to in_progress
+  - ""
+- - 2009-02-23 10:00:08.446803 Z
+  - Andrea Fazzi <andrea.fazzi@alcacoop.it>
+  - changed status from in_progress to paused
+  - ""
+time_spent: 177552.472063
+mark_time: 2009-02-23 10:00:08.446732 Z
