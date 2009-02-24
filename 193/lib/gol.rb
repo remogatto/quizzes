@@ -19,7 +19,7 @@ class Grid
       end
     end
     def to_s
-      alive? ? "x" : "-"
+      alive? ? "o" : "."
     end
   end
   def self.generate(width, height)
@@ -53,16 +53,18 @@ class Grid
   end
   def to_s
     inject("") do |result, cell|
-      result << cell.to_s << (cell.x == @w - 1 ? "\n" : "")
+      result << cell.to_s << (cell.x == (@w - 1) ? "\n" : "")
     end
   end
 end 
 
 if $0 == __FILE__
-  grid = Grid.generate(80, 20)  
-  while 0 != 1 
+  grid = Grid.generate(ARGV[0] || 75, ARGV[1] || 20)  
+  (ARGV[2] || 2000).times do |gen_id|
     grid.tick!
+    puts "#" * (ARGV[0] || 75)
     print grid
-    puts "-"*80
+    puts "#" * (ARGV[0] || 75)
+    puts "Generation n.#{gen_id + 1}"
   end
 end

@@ -102,7 +102,7 @@ describe Grid do
   it 'should return a string' do
     grid = Grid.new(@a)
     grid.tick!
-    grid.to_s.should == "----\n----\n-xx-\n----\n----\n"
+    grid.to_s.should == "....\n....\n.oo.\n....\n....\n"
   end
 end
 
