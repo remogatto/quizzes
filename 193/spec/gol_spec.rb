@@ -91,16 +91,18 @@ describe Grid do
            [0, 0, 1, 1, 0, 0],
            [0, 0, 0, 0, 0, 0]
           ]    
-    Grid.new(a_0).tick.cells.should == a_1
-    Grid.new(a_0).tick.tick.cells.should == a_2
-    Grid.new(b_0).tick.cells.should == b_1
-    Grid.new(b_0).tick.tick.cells.should == b_2
-    Grid.new(c_0).tick.cells.should == c_1
-    Grid.new(c_0).tick.tick.cells.should == c_2
-    Grid.new(c_0).tick.tick.tick.cells.should == c_3
+    Grid.new(a_0).tick!.should == a_1
+    Grid.new(Grid.new(a_0).tick!).tick!.should == a_2
+    Grid.new(b_0).tick!.should == b_1
+    Grid.new(Grid.new(b_0).tick!).tick!.should == b_2
+    Grid.new(c_0).tick!.should == c_1
+    Grid.new(Grid.new(c_0).tick!).tick!.should == c_2
+    Grid.new(Grid.new(Grid.new(c_0).tick!).tick!).tick!.should == c_3
   end
   it 'should return a string' do
-    Grid.new(@a).tick.to_s.should == "    \n    \n xx \n    \n    \n"
+    grid = Grid.new(@a)
+    grid.tick!
+    grid.to_s.should == "----\n----\n-xx-\n----\n----\n"
   end
 end
 
