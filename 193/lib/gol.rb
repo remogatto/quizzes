@@ -59,12 +59,13 @@ class Grid
 end 
 
 if $0 == __FILE__
-  grid = Grid.generate(ARGV[0] || 75, ARGV[1] || 20)  
-  (ARGV[2] || 2000).times do |gen_id|
+  args = ARGV.select { |arg| not arg.to_i.zero? }.map { |arg| arg.to_i }
+  grid = Grid.generate(args[0] || 75, args[1] || 20)  
+  (args[2] || 2000).times do |gen_id|
     grid.tick!
-    puts "#" * (ARGV[0] || 75)
+    puts "#" * (args[0] || 75)
     print grid
-    puts "#" * (ARGV[0] || 75)
+    puts "#" * (args[0] || 75)
     puts "Generation n.#{gen_id + 1}"
   end
 end
