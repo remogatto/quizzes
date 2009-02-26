@@ -28,6 +28,7 @@ class Grid
   def initialize(seed)
     @w, @h = seed.first.size, seed.size
     @cells = seed
+    @nextgen = Array.new(@h).map { Array.new(@w) }
   end
   def [](x, y)
     @cells[y % @h][x % @w]
@@ -41,7 +42,6 @@ class Grid
     end
   end
   def tick!
-    @nextgen = Array.new(@h).map { Array.new(@w) }
     each do |cell|
       if cell.alive?
         (cell.alive_neighbours < 2 || cell.alive_neighbours > 3) ? cell.die : cell.unchanged
@@ -49,12 +49,19 @@ class Grid
         cell.alive_neighbours == 3 ? cell.born : cell.unchanged
       end
     end
-    @cells = @nextgen
+    swap
   end
   def to_s
     inject("") do |result, cell|
       result << cell.to_s << (cell.x == (@w - 1) ? "\n" : "")
     end
+  end
+  private
+  def swap
+    temp = @cells
+    @cells = @nextgen
+    @nextgen = temp
+    @cells    
   end
 end 
 
