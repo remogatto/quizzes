@@ -92,12 +92,19 @@ describe Grid do
            [0, 0, 0, 0, 0, 0]
           ]    
     Grid.new(a_0).tick!.should == a_1
-    Grid.new(Grid.new(a_0).tick!).tick!.should == a_2
-    Grid.new(b_0).tick!.should == b_1
-    Grid.new(Grid.new(b_0).tick!).tick!.should == b_2
-    Grid.new(c_0).tick!.should == c_1
-    Grid.new(Grid.new(c_0).tick!).tick!.should == c_2
-    Grid.new(Grid.new(Grid.new(c_0).tick!).tick!).tick!.should == c_3
+
+    grid = Grid.new(a_0)
+    grid.tick!.should == a_1
+    grid.tick!.should == a_2
+
+    grid = Grid.new(b_0)
+    grid.tick!.should == b_1
+    grid.tick!.should == b_2
+
+    grid = Grid.new(c_0)
+    grid.tick!.should == c_1
+    grid.tick!.should == c_2
+    grid.tick!.should == c_3
   end
   it 'should return a string' do
     grid = Grid.new(@a)

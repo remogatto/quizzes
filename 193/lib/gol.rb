@@ -41,7 +41,7 @@ class Grid
     end
   end
   def tick!
-    @nextgen = Array.new(@h).map { Array.new(@w).dup }
+    @nextgen = Array.new(@h).map { Array.new(@w) }
     each do |cell|
       if cell.alive?
         (cell.alive_neighbours < 2 || cell.alive_neighbours > 3) ? cell.die : cell.unchanged
