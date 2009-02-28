@@ -14,7 +14,7 @@ class Grid
       @status == 1
     end
     def alive_neighbours
-      [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]].inject(0) do |sum, cell|
+      @alive_neightbours ||= [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]].inject(0) do |sum, cell|
         sum += @grid[@x + cell[0], @y + cell[1]]
       end
     end
